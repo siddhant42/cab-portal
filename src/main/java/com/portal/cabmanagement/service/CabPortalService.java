@@ -1,11 +1,13 @@
 package com.portal.cabmanagement.service;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.portal.cabmanagement.entity.Cab;
+import com.portal.cabmanagement.entity.City;
 import com.portal.cabmanagement.entity.Trip;
 import com.portal.cabmanagement.repository.CabRepository;
 import com.portal.cabmanagement.repository.CityRepository;
@@ -51,8 +53,10 @@ public class CabPortalService {
 
 	public void endTrip(Trip trip) {
 		trip = tripRepo.findById(trip.getId()).get();
-		trip.setEndTime(new Timestamp(System.currentTimeMillis()));
+		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+		trip.setEndTime(currentTime);
 		trip.getCab().setCity(cityRepo.getById(trip.getDestCityId()));
+		trip.getCab().setLastTripEndTime(currentTime);
 		double finalPrice = caculateFinalPrice(trip.getSourceCityId(), trip.getDestCityId());
 		trip.setFinalPrice(finalPrice);
 		tripRepo.saveAndFlush(trip);
@@ -64,5 +68,29 @@ public class CabPortalService {
 	private double caculateFinalPrice(int sourceCityId, int destCityId) {
 		// dummy value
 		return 50.0d;
+	}
+
+	public void register(Cab cab) {
+		cabRepo.saveAndFlush(cab);
+	}
+
+	public void register(City city) {
+		cityRepo.saveAndFlush(city);
+	}
+
+	public void update(Cab cab) {
+		Cab cab1 = cabRepo.findById(cab.getId()).get();
+		if(cab.getCity()!=null)
+		cab1.setCity(cab.getCity());
+		
+		if(cab.getStatus()!=null)
+		cab1.setStatus(cab.getStatus());
+		
+		cabRepo.saveAndFlush(cab1);
+	}
+
+	public List<City> getHighDemandCities() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
