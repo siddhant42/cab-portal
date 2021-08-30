@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.springsecurity.entity.User;
-import com.example.springsecurity.service.UserService;
+import com.portal.cabmanagement.entity.User;
+import com.portal.cabmanagement.service.UserService;
+
 
 @RestController
 @RequestMapping("/users")
