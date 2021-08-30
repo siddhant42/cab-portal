@@ -4,12 +4,13 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import lombok.Data;
 
@@ -18,12 +19,18 @@ import lombok.Data;
 @Table(name="trip")
 public class Trip {
 	@Id
+	@GeneratedValue(strategy =GenerationType.IDENTITY)
 	private int id;
-	private String source;
-	private String destination;
 	
-	@Temporal(TemporalType.TIMESTAMP)   
-	@Column(name = "bookingtime", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@OneToOne
+	@JoinColumn(name ="source_city_id", nullable = false)
+	private City sourceCity;
+	
+	@OneToOne
+	@JoinColumn(name ="dest_city_id", nullable = false)
+	private City destinationCity;
+	   
+	@Column(name = "bookingtime", nullable = false, updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private Timestamp bookingTime;
 	
 	@Column(name="starttime", nullable = true)
