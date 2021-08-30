@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.portal.cabmanagement.entity.City;
 import com.portal.cabmanagement.entity.Trip;
 import com.portal.cabmanagement.repository.CabPortalRepository;
-import com.portal.cabmanagement.repository.CustomerRepository;
 import com.portal.cabmanagement.repository.DriverRepository;
 
 @Service
@@ -20,9 +19,6 @@ public class CabPortalService {
 	
 	@Autowired
 	DriverRepository driverRepo;
-	
-	@Autowired
-	CustomerRepository customerRepo;
 	
 	private Random random = new Random();
 	
