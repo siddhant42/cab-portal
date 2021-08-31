@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.portal.cabmanagement.entity.Cab;
 import com.portal.cabmanagement.entity.City;
+import com.portal.cabmanagement.entity.Status;
 import com.portal.cabmanagement.entity.Trip;
 import com.portal.cabmanagement.repository.CabRepository;
 import com.portal.cabmanagement.repository.CityRepository;
@@ -37,7 +38,9 @@ public class CabPortalService {
 			throw new RuntimeException("no cab available now. Please try after some time");
 		}
 		Trip trip = new Trip();
+		cab.setStatus(Status.ON_TRIP);
 		trip.setCab(cab);
+		cabRepo.saveAndFlush(cab);
 		trip.setSourceCityId(sourceCityId);
 		trip.setDestCityId(destCityId);
 		trip.setBookingTime(new Timestamp(new Date().getTime()));
@@ -61,6 +64,7 @@ public class CabPortalService {
 		Timestamp currentTime = new Timestamp(System.currentTimeMillis());
 		trip.setEndTime(currentTime);
 		trip.getCab().setCity(cityRepo.getById(trip.getDestCityId()));
+		trip.getCab().setStatus(Status.IDLE);
 		trip.getCab().setLastTripEndTime(currentTime);
 		double finalPrice = caculateFinalPrice(trip.getSourceCityId(), trip.getDestCityId());
 		trip.setFinalPrice(finalPrice);
@@ -76,6 +80,7 @@ public class CabPortalService {
 	}
 
 	public void register(Cab cab) {
+		cab.setStatus(Status.IDLE);
 		cabRepo.saveAndFlush(cab);
 	}
 
@@ -138,5 +143,10 @@ public class CabPortalService {
 		List<Trip> trips = tripRepo.getAllTrip(id);
 		// calculate IDLE time
 		return null;
+	}
+
+	public List<City> getAllCities() {
+		return cityRepo.findAll();
+		
 	}
 }

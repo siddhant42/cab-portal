@@ -39,7 +39,8 @@ public class CabPortalController {
 		cabPortalService.endTrip(trip);
 	}
 	@PostMapping("/cab")
-	public void registerCab(Cab cab) {
+	public void registerCab(@RequestBody Cab cab) {
+		System.out.println(cab);
 		cabPortalService.register(cab);
 	}
 	@PutMapping("/cab")
@@ -47,8 +48,12 @@ public class CabPortalController {
 		cabPortalService.update(cab);
 	}
 	@PostMapping("/city")
-	public void registerCity(City city) {
+	public void registerCity(@RequestBody City city) {
 		cabPortalService.register(city);
+	}
+	@GetMapping("/city")
+	public List<City> getAllCities() {
+		return cabPortalService.getAllCities();
 	}
 	@GetMapping("/highdemandcities")
 	public Map<City,Integer> highDemandCities() {
