@@ -1,6 +1,7 @@
 package com.portal.cabmanagement.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,7 +49,15 @@ public class CabPortalController {
 		cabPortalService.register(city);
 	}
 	@GetMapping("/highdemandcities")
-	public List<City> highDemandCities() {
+	public Map<City,Integer> highDemandCities() {
 		return cabPortalService.getHighDemandCities();
+	}
+	@GetMapping("/highdemandHours/{city_id}")
+	public Map<String,Integer> highDemandHours(@PathVariable int city_id) {
+		return cabPortalService.getHighDemandHours(city_id);
+	}
+	@GetMapping("/highdemandcitywithtime")
+	public List<Object> highDemandCityWithTime() {
+		return cabPortalService.getHighDemandCityWithTime();
 	}
 }
