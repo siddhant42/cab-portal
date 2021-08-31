@@ -1,5 +1,7 @@
 package com.portal.cabmanagement.controller;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -59,5 +61,11 @@ public class CabPortalController {
 	@GetMapping("/highdemandcitywithtime")
 	public List<Object> highDemandCityWithTime() {
 		return cabPortalService.getHighDemandCityWithTime();
+	}
+	@GetMapping("/idletime/{id}")
+	public String getIdleTime(@PathVariable int id, String from, String to) {
+		LocalDateTime fromtime = LocalDateTime.parse(from, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		LocalDateTime tilltime = LocalDateTime.parse(to, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+		return cabPortalService.getIdleTime(id,fromtime,tilltime);
 	}
 }

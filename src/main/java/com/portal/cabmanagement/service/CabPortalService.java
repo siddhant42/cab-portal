@@ -2,7 +2,9 @@ package com.portal.cabmanagement.service;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +40,7 @@ public class CabPortalService {
 		trip.setCab(cab);
 		trip.setSourceCityId(sourceCityId);
 		trip.setDestCityId(destCityId);
-		trip.setBookingTime(new Timestamp(System.currentTimeMillis()));
+		trip.setBookingTime(new Timestamp(new Date().getTime()));
 		trip.setUserId(userid);
 		Trip newtrip = tripRepo.saveAndFlush(trip);
 		
@@ -47,7 +49,7 @@ public class CabPortalService {
 
 	public void startTrip(Trip trip) {
 		trip = tripRepo.findById(trip.getId()).get();
-		trip.setStartTime(new Timestamp(System.currentTimeMillis()));
+		trip.setStartTime(new Timestamp(new Date().getTime()));
 		trip.getCab().setCity(null);
 		double estimatedPrice = caculateEstPrice(trip.getSourceCityId(), trip.getDestCityId());
 		trip.setEstimatedPrice(estimatedPrice);
@@ -130,5 +132,11 @@ public class CabPortalService {
 			reslist.add(objarr);
 		}
 		return reslist;
+	}
+
+	public String getIdleTime(int id,LocalDateTime from, LocalDateTime to) {
+		List<Trip> trips = tripRepo.getAllTrip(id);
+		// calculate IDLE time
+		return null;
 	}
 }
